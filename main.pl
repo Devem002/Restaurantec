@@ -36,15 +36,50 @@ comentario("El Tipico Barrialeño", "Lugar casual y familiar, perfecto para disf
 
 %Menus de los diferentes restaurantes%
 
-menu("McDonlald's").
-menu("Taco Bell").
-menu("KFC").
+menu("McDonlald's", "Comida rapida", ["Quesoburguesa", "Mcnuggets", "Papas fritas", "Pastel de manzana"]).
+menu("Taco Bell", "Comida rapida", ["Taco", "Burrito", "Fiesta Fries", "Chunchyrap"]).
+menu("KFC", "Comida rapida", ["Balde de pollo grande", "Balde de pollo pequeño", "Boneless", "Pure de papa"]).
 
-menu("Limoncello").
-menu("Pizzeria ll Pomodoro").
-menu("Tsunami Sushi").
-menu("El Jardin de Lolita").
+menu("Limoncello", "Italiana", ["Pizza", ["Peperoni", "4 Estaciones", "Napolitana"], "Pasta", ["Boloñesa", "Carbonara", "Pomodoro"]]).
+menu("Pizzeria ll Pomodoro", "Italiana", ["Pizza", ["Peperoni", "4 Estaciones", "Napolitana", "Cuatro quesos", "Margarita", "Brasileña", "Hongos"]], "Calzone").
+menu("Tsunami Sushi", "Sushi", ["Rollos", ["California", "Tico", "Crab"], "Ramen", "Arroz frito", "Sopa Miso"]).
+menu("El Jardin de Lolita", "Diverso", ["Hamburguesa", "Helados", "Pizza", ["Jamon y Queso", "Suprema"]]).
 
-menu("Leña y Carbon").
-menu("El Novillo Alegre").
-menu("El Tipico Barrialeño").
+menu("Leña y Carbon", "Carnes", ["Churrasco", "Ribeye", "New York", "Entraña"]).
+menu("El Novillo Alegre", "Carnes", ["Chorizo", "Hamburguesa", "Costilla", "Milanesa"]).
+menu("El Tipico Barrialeño", "Diverso", ["Chifrijo", "Papas supremas", "Nachos mixtos", "Mondongo"]).
+
+%================= Comida Rapida ===============%
+
+%Diferentes restaurantes catalogados como comida rapida%
+
+comidarapida("McDonald's", ["Quesoburguesa", "Mcnuggets", "Papas fritas", "Pastel de manzana"]).
+comidarapida("Taco Bell", ["Taco", "Burrito", "Fiesta Fries", "Chunchyrap"]).
+comidarapida("KFC", ["Balde de pollo grande", "Balde de pollo pequeño", "Boneless", "Pure de papa"]).
+
+%================= Italiana ===============%
+
+%Diferentes restaurantes catalogados como italiana%
+
+italiana("Limoncello", ["Pizza", ["Peperoni", "4 Estaciones", "Napolitana"], "Pasta", ["Boloñesa", "Carbonara", "Pomodoro"]]).
+italiana("Pizzeria ll Pomodoro", ["Pizza", ["Peperoni", "4 Estaciones", "Napolitana", "Cuatro quesos", "Margarita", "Brasileña", "Hongos"]], "Calzone").
+
+%================= Sushi ===============%
+
+%Diferentes restaurantes catalogados como sushi%
+
+sushi("Tsunami Sushi", ["Rollos", ["California", "Tico", "Crab"], "Ramen", "Arroz frito", "Sopa Miso"]).
+
+%================= Diverso ===============%
+
+%Diferentes restaurantes catalogados como diverso%
+
+diverso("El Jardin de Lolita", ["Hamburguesa", "Helados", "Pizza", ["Jamon y Queso", "Suprema"]]).
+diverso("El Tipico Barrialeño", ["Chifrijo", "Papas supremas", "Nachos mixtos", "Mondongo"]).
+
+%================= Carnes ===============%
+
+%Diferentes restaurantes catalogados como Carnes%
+
+carnes("Leña y Carbon", ["Churrasco", "Ribeye", "New York", "Entraña"]).
+carnes("El Novillo Alegre", ["Chorizo", "Hamburguesa", "Costilla", "Milanesa"]).
