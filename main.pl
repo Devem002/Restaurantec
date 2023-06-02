@@ -128,3 +128,91 @@ direccion("El Jardin de Lolita", "40").
 direccion("Lena y Carbon", "28").
 direccion("El Tipico Barrialeno", "30").
 direccion("El Novillo Alegre", "42").
+
+%=======================  SINTAGMAS =========================%
+
+% sintagma_nominal(Género, Número, Estado, Oración preliminar, Oración,Palabra clave).
+%
+sintagma_nominal(Gen,Num,Estado,S0,S, S1):-
+    determinante(Gen,Num,S0,S1),
+    nombre(Gen,Num,Estado,S1,S2),
+    adjetivo(Gen,Num,S2,S).
+
+sintagma_nominal(Gen,Num,Estado,S0,S, S1):-
+    nombre(Gen,Num,Estado,S0,S1),
+    adjetivo(Gen,Num,S1,S).
+
+sintagma_nominal(Gen,Num,Estado,S0,S, S1):-
+    determinante(Gen,Num,S0,S1),
+    nombre(Gen,Num,Estado,S1,S).
+
+sintagma_nominal(Gen,Num,Estado,S0,S, S0):-
+    nombre(Gen,Num,Estado,S0,S).
+
+
+% sintagma_verbal(Género, Número, Estado, Oración preliminar, Oración,Palabra clave).
+
+sintagma_verbal(Num,_Estado,S0,S):-verbo(Num,S0,S).
+
+sintagma_verbal(Num,Estado,S0,S):-
+    verbo(Num,S0,S1),
+    infinitivo(Estado,S1,S).
+
+%=======================  NOMINAL =========================%
+
+%determinante(Género, Número, Determinante, Oración).%
+determinante(femenino, singular, [una|S],S).
+determinante(femenino, plural, [unas|S],S).
+determinante(masculino, singular, [un|S],S).
+determinante(masculino, plural, [unos|S],S).
+
+
+%pronombre(Número, Pronombre, Oración).%
+pronombre(singular,[yo|S],S).
+
+%adjetivo(Género, Número, adjetivo, Oración).%
+
+adjetivo(femenino,singular,[rápida|S],S).
+
+%nombre(Género, Número, Estado,  Nombre, Oración).%
+
+nombre(masculino, singular, solido, [italiano|S],S).
+nombre(masculino, _, solido, [tacos|S],S).
+nombre(masculino, singular, solido, [calzone|S],S).
+nombre(masculino, singular, solido, [espagueti|S],S).
+nombre(femenino, singular, solido, [pizza|S],S).
+nombre(femenino, _, solido, [papas|S],S).
+nombre(femenino, _, solido, [hamburguesas|S],S).
+nombre(femenino, singular, solido, [comida|S],S).
+nombre(femenino, singular, liquido, [bebida|S],S).
+
+%lugares(_, Oración). Admite cualquier lugar%
+
+lugares([_|S],S).
+
+%=======================  VERBAL =========================%
+
+% verbo(Número, Verbo, Oración).%
+
+verbo(singular,[quiero|S],S).
+verbo(singular,[deseo|S],S).
+
+%infinitivo(Estado,  Infinitivo, Oración).%
+
+infinitivo(solido, [comer|S],S).
+infinitivo(solido, [degustar|S],S).
+infinitivo(solido, [ingerir|S],S).
+infinitivo(solido, [almorzar|S],S).
+infinitivo(solido, [cenar|S],S).
+
+
+infinitivo(liquido, [tomar|S],S).
+infinitivo(liquido, [beber|S],S).
+infinitivo(liquido, [embriagar|S],S).
+infinitivo(liquido, [brindar|S],S).
+
+
+%preposición(Preposición Oración).%
+
+preposicion([en|S],S).
+preposicion([para|S],S).
