@@ -11,7 +11,7 @@
 % Convierte la entrada recibida en una lista
 % E: Input del usuario
 % S: Lista
-input_to_list(L):-
+inputToList(L):-
 	read_line_to_codes(user_input,Cs),
 	atom_codes(A,Cs),
 	atomic_list_concat(L,' ',A).
@@ -20,14 +20,14 @@ input_to_list(L):-
 % E: Lista y string
 % S: String
 
-list_to_string(List, String):-
+listToString(List, String):-
 	atomic_list_concat(List, ' ', String).
 
 % Se convierta un string a una lista
 % E: String y lista
 % S: Lista
 
-string_to_list_of_atoms(X,L):-
+stringToListOfAtoms(X,L):-
 	atom_codes(X,A),
 	atomic_list_concat(L,' ',X).
 
@@ -44,67 +44,72 @@ miembro(X,[_|T]):-miembro(X,T).
 %                 %
 
 
-% Busca el tipo de menu
+% Busca el tipo de comida
 % E: Lista y resultado
 % S: Nombre del menu
 
-compareTipoDeMenu([],X):- nl, writeln('Hey, el tipo de comida que pides no se encuentra disponible'),
+tipoDeComida([],X):- nl, writeln('Hey, el tipo de comida que pides no se encuentra disponible'),
 			  writeln('Inténtalo de nuevo, tal vez pueda ayudarte con algo más'),nl,
-			  input_to_list(Oracion),
-			  compareTipoDeMenu(Oracion,X).
+			  inputToList(Oracion),
+			  tipoDeComida(Oracion,X).
 
-compareTipoDeMenu([H|_], X):- listaTipoDeMenu(L),
+tipoDeComida([H|_], X):- listaTipoDeComida(L),
 			      miembro(H,L),
 			      X = H, !.
 
-compareTipoDeMenu([H|T], X):- listaTipoDeMenu(L),
+tipoDeComida([H|T], X):- listaTipoDeComida(L),
 			      \+miembro(H,L),
-			      compareTipoDeMenu(T,X).
-listaTipoDeMenu(L) :- findall(X, (restaurante([_,X,_,_,_])) , L).
+			      tipoDeComida(T,X).
+
+% Busca la lista de comidas disponibles
+% E: Resultado
+% S: Lista de tipos de comidas
+
+listaTipoDeComida(L) :- findall(X, (restaurante([_,X,_,_,_])) , L).
 
 
-% Busca la comida
+% Busca el platillo
 % E: Lista y resultado
-% S: Nombre de la comida
+% S: Nombre del platillo
 
-compareComida([],X):- nl, writeln('Hmm, parece que la comida que quieres no está disponible'),
+platillo([],X):- nl, writeln('Hmm, parece que la comida que quieres no está disponible'),
 		      writeln('¿Qué más te apetece?'),nl,
-		      input_to_list(Oracion),
-		      compareComida(Oracion,X).
+		      inputToList(Oracion),
+		      platillo(Oracion,X).
 
-compareComida([H|_], X):- listaComidas(L),
+platillo([H|_], X):- listaPlatillo(L),
 			  miembro(H,L),
 			  X = H, !.
 
-compareComida([H|T], X):- listaComidas(L),
+platillo([H|T], X):- listaPlatillo(L),
 			  \+miembro(H,L),
-			  compareComida(T,X).
-% Busca la lista de comidas disponibles
+			  platillo(T,X).
+% Busca la lista de platillos disponibles
 % E: Resultado
-% S: Lista de comidas
+% S: Lista de platillos
 
-listaComidas(L) :- findall(X, (menu([X|_])), L).
+listaPlatillo(L) :- findall(X, (menu([X|_])), L).
 
 
 % Busca el sabor pedido de comida
 % E: Lista y resultado
 % S: Sabor de la comida
 
-compareSaborComidaAux([H|_], X):- listaSaborComida(L),
+saborComidaAux([H|_], X):- listaSaborComida(L),
 				  flatten(L,Y),
 				  X = Y.
 
-compareSaborComida([],X):- nl, writeln('Parece ser que no tenemos ese sabor que buscas'),
+saborComida([],X):- nl, writeln('Parece ser que no tenemos ese sabor que buscas'),
 			       writeln('Pero tenemos otros incluso mejores, prueba otro'),nl,
-			       input_to_list(Oracion),
-			       compareSaborComida(Oracion,X).
+			       inputToList(Oracion),
+			       saborComida(Oracion,X).
 
-compareSaborComida([H|_], X):- compareSaborComidaAux(C, Y),
+saborComida([H|_], X):- saborComidaAux(C, Y),
 			       miembro(H,Y),
 			       X = H, !.
-compareSaborComida([H|T], X):- compareSaborComidaAux(C, Y),
+saborComida([H|T], X):- saborComidaAux(C, Y),
 			       \+miembro(H,Y),
-			       compareSaborComida(T,X).
+			       saborComida(T,X).
 
 % Busca la lista de sabores posibles para una comida
 % E: Resultado
@@ -117,18 +122,18 @@ listaSaborComida(L) :- findall(X, (menu([_,_,X])), L).
 % E: Lista y el resultado
 % S: Sabor de la bebida
 
-compareBebida([],X):- nl, writeln('El sabor de la bebida que buscas parece que no está¡ disponible'),
+bebida([],X):- nl, writeln('El sabor de la bebida que buscas parece que no está¡ disponible'),
 		      writeln('¿Que otra bebida te apetece?'),nl,
-		      input_to_list(Oracion),
-		      compareBebida(Oracion,X).
+		      inputToList(Oracion),
+		      bebida(Oracion,X).
 
-compareBebida([H|_], X):- listaBebidas(L),
+bebida([H|_], X):- listaBebidas(L),
 			  miembro(H,L),
 			  X = H, !.
 
-compareBebida([H|T], X):- listaBebidas(L),
+bebida([H|T], X):- listaBebidas(L),
 			  \+miembro(H,L),
-			  compareBebida(T,X).
+			  bebida(T,X).
 
 % Se busca la lista de todas las bebidas
 % E: Resultado
@@ -141,162 +146,163 @@ listaBebidas(L) :- findall(X, (bebida([X|_])) , L).
 % E: Lista y resultadd
 % S: nombre del lugar
 
-compareLugarAux([H|_], X):- listaLugar(L),
+lugarAux([H|_], X):- listaLugares(L),
 			    flatten(L,Y),
 			    X = Y.
 
-compareLugar([],X):- nl, writeln('El lugar que procuras parece no estar disponible'),
+lugar([],X):- nl, writeln('El lugar que procuras parece no estar disponible en nuestra aplicación'),
 		     writeln('¿Otro lugar?'),nl,
-		     input_to_list(Oracion),
-		     compareLugar(Oracion,X).
+		     inputToList(Oracion),
+		     lugar(Oracion,X).
 
-compareLugar([H|_], X):- compareLugarAux(C, Y),
+lugar([H|_], X):- lugarAux(C, Y),
 			 miembro(H,Y),
 			 X = H, !.
 
-compareLugar([H|T], X):- compareLugarAux(C, Y),
+lugar([H|T], X):- lugarAux(C, Y),
 			 \+miembro(H,Y),
-			 compareLugar(T,X).
+			 lugar(T,X).
 
 % Busca la lista de lugares
 % E: Resultado
 % S: Lista de lugares disponibles
-listaLugar(L) :- findall(X, (restaurante([_,_,X,_,_])) , L).
+listaLugares(L) :- findall(X, (restaurante([_,_,X,_,_])) , L).
 
 
 % Se busca la cantidad de personas para un cupo.
 % E: Lista y Resultado
 % S: Cantidad de personas
 
-compareCantidad([],X):-  nl, writeln('Parece ser que no hay el espacio necesario para ti y tus acompañantes'),
+cantidad([],X):-  nl, writeln('Parece ser que no hay el espacio necesario para ti y tus acompañantes'),
 			 writeln('¿Puedo ayudarte con otra cantidad?'),nl,
-			 input_to_list(Oracion),
-			 compareCantidad(Oracion,X).
-compareCantidad([H|_], X):- listaCantidad(L),
+			 inputToList(Oracion),
+			 cantidad(Oracion,X).
+cantidad([H|_], X):- listaCantidad(L),
 			    miembro(H,L) ,
 			    atom_number(H, Y),
 			    X = Y, !.
-compareCantidad([H|T], X):- listaCantidad(L),
+cantidad([H|T], X):- listaCantidad(L),
 			    \+miembro(H,L),
-			    compareCantidad(T,X).
+			    cantidad(T,X).
 
 
 % Lista de cupos disponibles
 % E: Resultado
 % S: Lista de cantidades de cupos
 listaCantidad(Cantidad) :- numlist(1, 40, CantidadTemp),
-			   list_to_string(CantidadTemp, Str),
-			   string_to_list_of_atoms(Str,Cantidad).
+			   listToString(CantidadTemp, Str),
+			   stringToListOfAtoms(Str,Cantidad).
 
 % Petición de los inputs del usuario
-% E: Nombre del Restaurante, Tipo del Menu, Tipo de Comida, Sabor de la Comida, Tipo de Bebida, Lugar Deseado y Cantidad de Personas
+% E: Nombre del Restaurante, Tipo de comida, Tipo de platillo, Sabor de la Comida, Tipo de Bebida, Lugar Deseado y Cantidad de Personas
 % S: Resultado final de busqueda del restaurante
 
-pedirDatos(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+inicializaciónDeApp(NombreRest, TipoComida, Platillo, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
 
 	% Sección dedicada al menu que quiere el usuario.
-	nl, writeln('¿Qué tipo de restaurante te apetece comer el día de hoy?'),
-	input_to_list(Oracion),
+	nl, writeln('¿Qué tipo de comida te apetece comer el día de hoy?'),
+	inputToList(Oracion),
 	validacion_de_gramatica(Oracion),
-    compareTipoDeMenu(Oracion, TipoMenuTemp),
-	TipoMenu = TipoMenuTemp,
+    tipoDeComida(Oracion, TipoComidaTemp),
+	TipoComida = TipoComidaTemp,
 
 	% Sección que busca la comida que se desea
-	nl, writeln('¿En que comida estás pensando en este momento?'),
-	input_to_list(Oracion3),
+	nl, writeln('¿En que platillo estás pensando en este momento?'),
+	inputToList(Oracion3),
 	validacion_de_gramatica(Oracion3),
-	compareComida(Oracion3, ComidaTemp),
-	TipoComida = ComidaTemp,
+	platillo(Oracion3, ComidaTemp),
+	Platillo = ComidaTemp,
 
 	% Sección que busca el sabor especifico
-	nl, write('¿Cuál tipo de '), write(TipoComida), writeln(' desea?'),
-	input_to_list(Oracion4),
+	nl, write('¿Cuál tipo de '), write(Platillo), writeln(' desea?'),
+	inputToList(Oracion4),
 	validacion_de_gramatica(Oracion4),
-	compareSaborComida(Oracion4, SaborComidaTemp),
+	saborComida(Oracion4, SaborComidaTemp),
 	SaborComida = SaborComidaTemp,
 
 	% Sección dedicada que busca la bebida
 	nl, writeln('¿Qué bebida le gustaría para acompañar su comida?'),
-	input_to_list(Oracion5),
+	inputToList(Oracion5),
 	validacion_de_gramatica(Oracion5),
-	compareBebida(Oracion5, BebidaTemp),
+	bebida(Oracion5, BebidaTemp),
 	TipoBebida = BebidaTemp,
 
 	% Sección dedicada que busca el lugar
 	nl, writeln('¿En cual provincia le quedaría mejor para comer?'),
-	input_to_list(Oracion6),
+	inputToList(Oracion6),
 	validacion_de_gramatica(Oracion6),
-	compareLugar(Oracion6, LugarTemp),
+	lugar(Oracion6, LugarTemp),
 	LugarDeseado = LugarTemp,
 
 	% Sección dedicada que busca la cantidad de personas que irán al restaurante
 	nl, writeln('¿Cuantas personas van a asistir al restaurante?'),nl,
-	input_to_list(Oracion7),
+	inputToList(Oracion7),
 	validacion_de_gramatica(Oracion7),
-	compareCantidad(Oracion7, CantidadTemp),
+	cantidad(Oracion7, CantidadTemp),
 	CantidadDeseada = CantidadTemp,
 
 	% Se validan los datos y se el restaurante en caso de existir
-	buscarRestauranteConDatosIngresados(RestTemp, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada).
+	buscarRestauranteConDatosIngresados(RestTemp, TipoComida, Platillo, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada).
 
 
 % Se verifican los inputs del usuario
 
-verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles):-
+verificacionDeDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles):-
 	miembro(NombreRest, NombreIngresado),
 	miembro(NombreRest, NombreIngresado2),
 	miembro(SaborComida, SaboresDisponibles).
 
 % Busca el mejor restaurante segun los datos obtenidos del usuario
 
-buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
-    restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
+buscarRestauranteConDatosIngresados(NombreRest, TipoComida, Platillo, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+    restaurante([NombreRest, TipoComida, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
 	CantidadDeseada > 0,
 	CantidadDeseada =< RCapacidad,
-	menu([TipoComida, NombreIngresado, SaboresDisponibles]),
+	menu([Platillo, NombreIngresado, SaboresDisponibles]),
 	bebida([TipoBebida, NombreIngresado2]),
-	verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
-	crearReferencia(NombreRest, Direccion, Obligaciones),
+	verificacionDeDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
+	crearRecomendacion(NombreRest, Direccion, Obligaciones),
 	buscarNuevamente(), !.
 
-buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
-    restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
+buscarRestauranteConDatosIngresados(NombreRest, TipoComida, Platillo, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+    restaurante([NombreRest, TipoComida, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
 	CantidadDeseada > 0,
 	CantidadDeseada > RCapacidad,
 	nl, write('La cantidad de personas supera la capacidad total del restaurante: '), write(RCapacidad), nl,
 	write('Prueba con otra cantida por favor'), nl, nl,
-	input_to_list(Oracion),
+	inputToList(Oracion),
 	validacion_de_gramatica(Oracion),
-	compareCantidad(Oracion, CantidadTemp),
-	buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadTemp).
+	cantidad(Oracion, CantidadTemp),
+	buscarRestauranteConDatosIngresados(NombreRest, TipoComida, Platillo, SaborComida, TipoBebida, LugarDeseado, CantidadTemp).
 
-buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
-	restaurante([NombreRest, TipoMenu, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
+buscarRestauranteConDatosIngresados(NombreRest, TipoComida, Platillo, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
+	restaurante([NombreRest, TipoComida, [LugarDeseado | Direccion], RCapacidad, Obligaciones]),
 	CantidadDeseada > 0,
 	CantidadDeseada =< RCapacidad,
-	menu([TipoComida, NombreIngresado, SaboresDisponibles]),
+	menu([Platillo, NombreIngresado, SaboresDisponibles]),
 	bebida([TipoBebida, NombreIngresado2]),
-	\+verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
+	\+verificacionDeDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
 	nl, writeln('> Lo intente pero no pude encontrar un restaurante lo suficientemente bueno para tí. Lo siento mucho :( <'), nl,
 	buscarNuevamente(), !.
 
 % Se crea la recomendación del restaurante
 
-crearReferencia(NombreRest, DireccionTemp, Obligaciones):-
-	list_to_string(DireccionTemp,Direccion),
+crearRecomendacion(NombreRest, DireccionTemp, Obligaciones):-
+	listToString(DireccionTemp,Direccion),
+	writeln('Hmm, dejame ver...'),nl,
 	write('> Nuestra sugerencia de restaurante es: '), write(NombreRest), writeln(' <'),
 	write('> La direccion es: '), write(Direccion), writeln(' <'),
-	write('> Tenga en cuenta que para ingresar al restaurante '), write(Obligaciones), writeln(' <'),
+	write('> Para que te hagas una idea, '), write(Obligaciones), writeln(' <'),
 	nl.
 
 % Se le da la opción al usuario de volver a buscar otro restaurante
 
 buscarNuevamenteAux(Respuesta):- miembro('si',Respuesta),
-								 pedirDatos(A,B,C,D,E,F,G).
+								 inicializaciónDeApp(A,B,C,D,E,F,G).
 buscarNuevamenteAux(Respuesta):- \+miembro('si',Respuesta),
 								 despedida(), !.
-buscarNuevamente():- nl, writeln('> ¿Quieres volver a bucar una recomendación? Por favor dime sí o no <'), nl,
-						input_to_list(Respuesta),
+buscarNuevamente():- nl, writeln('> ¿Quieres alguna otra recomendación? Por favor dime si o no <'), nl,
+						inputToList(Respuesta),
 						buscarNuevamenteAux(Respuesta), !.
 
 % Presentación de RestauranTEC
@@ -366,4 +372,4 @@ despedida():-
 % Se encarga de comenzar todo el programa
 restauranTEC():-
 	encabezado(),
-	pedirDatos(A,B,C,D,E,F,G).
+	inicializaciónDeApp(A,B,C,D,E,F,G).
