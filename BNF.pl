@@ -157,5 +157,5 @@ validacion_de_gramatica(Oracion):-
 	nl, writeln('Oracion gramaticalmente incorrecta'),
 	writeln('Escriba de nuevo su oracion'),nl,
 	input_to_list(Oracion2),
-	validacion_gramatical(Oracion2).
+	validacion_de_gramatica(Oracion2).
 

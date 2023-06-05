@@ -6,17 +6,7 @@
 
 %						       %
 % Definición de hechos de apoyo, a modo de operaciones %
-%						       %
-
-% Verifica si una lista se encuentra vacía
-% E: Lista que se quiere verificar y el tamaño
-% S: Booleano indicando si está vacía
-lista_vacia(List, Empty) :-
-    length(List, Len),
-    (   Len =< 1
-    ->  Empty = true
-    ;   Empty = false
-    ).
+%
 
 % Convierte la entrada recibida en una lista
 % E: Input del usuario
@@ -25,13 +15,6 @@ input_to_list(L):-
 	read_line_to_codes(user_input,Cs),
 	atom_codes(A,Cs),
 	atomic_list_concat(L,' ',A).
-
-% Convierte la entrada recibida a string
-% E: Input del usuario
-% S: String
-input_to_string(A):-
-	read_line_to_codes(user_input,Cs),
-	atom_codes(A,Cs).
 
 % Covierte una lista a un string
 % E: Lista y string
@@ -65,8 +48,8 @@ miembro(X,[_|T]):-miembro(X,T).
 % E: Lista y resultado
 % S: Nombre del menu
 
-compareTipoDeMenu([],X):- nl, writeln('Hey, el menu que pides no se encuentra disponible'),
-			  writeln('Intenta de nuevo, tal vez pueda ayudarte con algo más'),nl,
+compareTipoDeMenu([],X):- nl, writeln('Hey, el tipo de comida que pides no se encuentra disponible'),
+			  writeln('Inténtalo de nuevo, tal vez pueda ayudarte con algo más'),nl,
 			  input_to_list(Oracion),
 			  compareTipoDeMenu(Oracion,X).
 
@@ -77,12 +60,14 @@ compareTipoDeMenu([H|_], X):- listaTipoDeMenu(L),
 compareTipoDeMenu([H|T], X):- listaTipoDeMenu(L),
 			      \+miembro(H,L),
 			      compareTipoDeMenu(T,X).
+listaTipoDeMenu(L) :- findall(X, (restaurante([_,X,_,_,_])) , L).
+
 
 % Busca la comida
 % E: Lista y resultado
 % S: Nombre de la comida
 
-compareComida([],X):- nl, writeln('Hmm, parece que la comida que quieres no está¡ disponible'),
+compareComida([],X):- nl, writeln('Hmm, parece que la comida que quieres no está disponible'),
 		      writeln('¿Qué más te apetece?'),nl,
 		      input_to_list(Oracion),
 		      compareComida(Oracion,X).
@@ -94,6 +79,12 @@ compareComida([H|_], X):- listaComidas(L),
 compareComida([H|T], X):- listaComidas(L),
 			  \+miembro(H,L),
 			  compareComida(T,X).
+% Busca la lista de comidas disponibles
+% E: Resultado
+% S: Lista de comidas
+
+listaComidas(L) :- findall(X, (menu([X|_])), L).
+
 
 % Busca el sabor pedido de comida
 % E: Lista y resultado
@@ -115,6 +106,13 @@ compareSaborComida([H|T], X):- compareSaborComidaAux(C, Y),
 			       \+miembro(H,Y),
 			       compareSaborComida(T,X).
 
+% Busca la lista de sabores posibles para una comida
+% E: Resultado
+% S: Lista de sabores
+
+listaSaborComida(L) :- findall(X, (menu([_,_,X])), L).
+
+
 % Se encarga de buscar el refresco
 % E: Lista y el resultado
 % S: Sabor de la bebida
@@ -131,6 +129,13 @@ compareBebida([H|_], X):- listaBebidas(L),
 compareBebida([H|T], X):- listaBebidas(L),
 			  \+miembro(H,L),
 			  compareBebida(T,X).
+
+% Se busca la lista de todas las bebidas
+% E: Resultado
+% S:  Lista de bebidas
+
+listaBebidas(L) :- findall(X, (bebida([X|_])) , L).
+
 
 % Se busca el lugar ingresado
 % E: Lista y resultadd
@@ -153,6 +158,12 @@ compareLugar([H|T], X):- compareLugarAux(C, Y),
 			 \+miembro(H,Y),
 			 compareLugar(T,X).
 
+% Busca la lista de lugares
+% E: Resultado
+% S: Lista de lugares disponibles
+listaLugar(L) :- findall(X, (restaurante([_,_,X,_,_])) , L).
+
+
 % Se busca la cantidad de personas para un cupo.
 % E: Lista y Resultado
 % S: Cantidad de personas
@@ -169,34 +180,6 @@ compareCantidad([H|T], X):- listaCantidad(L),
 			    \+miembro(H,L),
 			    compareCantidad(T,X).
 
-% Busca la lista completa de restaurantes
-% E: Resultado
-% S: Lista de restaurantes
-
-listaRestaurantes(L) :- findall(X, (restaurante([X|_])), L).
-
-% Busca la lista de comidas disponibles
-% E: Resultado
-% S: Lista de comidas
-
-listaComidas(L) :- findall(X, (menu([X|_])), L).
-
-% Busca la lista de sabores posibles para una comida
-% E: Resultado
-% S: Lista de sabores
-
-listaSaborComida(L) :- findall(X, (menu([_,_,X])), L).
-
-% Se busca la lista de todas las bebidas
-% E: Resultado
-% S:  Lista de bebidas
-
-listaBebidas(L) :- findall(X, (bebida([X|_])) , L).
-
-% Busca la lista de lugares
-% E: Resultado
-% S: Lista de lugares disponibles
-listaLugar(L) :- findall(X, (restaurante([_,_,X,_,_])) , L).
 
 % Lista de cupos disponibles
 % E: Resultado
@@ -212,44 +195,44 @@ listaCantidad(Cantidad) :- numlist(1, 40, CantidadTemp),
 pedirDatos(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
 
 	% Sección dedicada al menu que quiere el usuario.
-	nl, writeln('¿Qué menu te apetece comer el día de hoy?'),
+	nl, writeln('¿Qué tipo de restaurante te apetece comer el día de hoy?'),
 	input_to_list(Oracion),
-	validacion_gramatical(Oracion),
+	validacion_de_gramatica(Oracion),
     compareTipoDeMenu(Oracion, TipoMenuTemp),
 	TipoMenu = TipoMenuTemp,
 
 	% Sección que busca la comida que se desea
-	nl, write('¿En que comida estás pensando en este momento?'),
+	nl, writeln('¿En que comida estás pensando en este momento?'),
 	input_to_list(Oracion3),
-	validacion_gramatical(Oracion3),
+	validacion_de_gramatica(Oracion3),
 	compareComida(Oracion3, ComidaTemp),
 	TipoComida = ComidaTemp,
 
 	% Sección que busca el sabor especifico
-	nl, write('¿Cuál tipo de '), write(TipoComida), write(' desea?'), nl,
+	nl, write('¿Cuál tipo de '), write(TipoComida), writeln(' desea?'),
 	input_to_list(Oracion4),
-	validacion_gramatical(Oracion4),
+	validacion_de_gramatica(Oracion4),
 	compareSaborComida(Oracion4, SaborComidaTemp),
 	SaborComida = SaborComidaTemp,
 
 	% Sección dedicada que busca la bebida
 	nl, writeln('¿Qué bebida le gustaría para acompañar su comida?'),
 	input_to_list(Oracion5),
-	validacion_gramatical(Oracion5),
+	validacion_de_gramatica(Oracion5),
 	compareBebida(Oracion5, BebidaTemp),
 	TipoBebida = BebidaTemp,
 
 	% Sección dedicada que busca el lugar
-	nl, write('¿En cual provincia le quedaría mejor para comer?'), nl,
+	nl, writeln('¿En cual provincia le quedaría mejor para comer?'),
 	input_to_list(Oracion6),
-	validacion_gramatical(Oracion6),
+	validacion_de_gramatica(Oracion6),
 	compareLugar(Oracion6, LugarTemp),
 	LugarDeseado = LugarTemp,
 
 	% Sección dedicada que busca la cantidad de personas que irán al restaurante
-	nl, writeln('¿Cuantas personas van a asistir al restaurante?'),
+	nl, writeln('¿Cuantas personas van a asistir al restaurante?'),nl,
 	input_to_list(Oracion7),
-	validacion_gramatical(Oracion7),
+	validacion_de_gramatica(Oracion7),
 	compareCantidad(Oracion7, CantidadTemp),
 	CantidadDeseada = CantidadTemp,
 
@@ -283,7 +266,7 @@ buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComid
 	nl, write('La cantidad de personas supera la capacidad total del restaurante: '), write(RCapacidad), nl,
 	write('Prueba con otra cantida por favor'), nl, nl,
 	input_to_list(Oracion),
-	validacion_gramatical(Oracion),
+	validacion_de_gramatica(Oracion),
 	compareCantidad(Oracion, CantidadTemp),
 	buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadTemp).
 
