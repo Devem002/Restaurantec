@@ -92,6 +92,7 @@ verbo([queremos,estar,alrededor,de|S],S).
 verbo([queremos,algo,alrededor,de|S],S).
 
 verbo([seria|S], S).
+verbo([seria,para|S], S).
 verbo([serian|S], S).
 verbo([seriamos|S], S).
 verbo([somos|S], S).
@@ -211,7 +212,7 @@ validacion_de_gramatica(Oracion):-
 
 validacion_de_gramatica(Oracion):-
 	nl, writeln('Hmm, no te termine de entender'),
-	writeln('Â¿Puedes escribirlo otra vez?'),nl,
+	writeln('¿Puedes escribirlo otra vez, por favor?'),nl,
 	inputToList(Oracion2),
 	validacion_de_gramatica(Oracion2).
 

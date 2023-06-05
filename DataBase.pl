@@ -15,19 +15,19 @@ restaurante(['Rostipollos', rapida, ['Puntarenas', 'Hotel Alamar'], 30, 'perfect
 restaurante(['BurguerKing', rapida,['Puntarenas', 'Puntarenas Down Town'],20,'es una cadena de restaurantes de comida r√°pida conocida por sus hamburguesas a la parrilla']).
 
 %Heredia
-restaurante(['LungFung',china,['Heredia', 'Mall Paseo de Las Flores'],20,'este restaurante ofrece aut√©ntica comida china, preparada por chefs expertos en la cocina de este pa√≠s. En su men√∫ encontrar√°s una amplia variedad de platos tradicionales']).
+restaurante(['LungFung',china,['Heredia', 'Mall Paseo de Las Flores'],20,'este restaurante ofrece autÈntica comida china, preparada por chefs expertos en la cocina de este paÌs. En su menu encontrar·s una amplia variedad de platos tradicionales']).
 restaurante(['MariscosyMas', mariscos, ['Heredia', 'Entrada principal de la UNA 100 oeste y 25 Sur'], 30, 'es un local no muy grande pero con una deliciosa cocina centrada principalmente en los frutos del mar']).
 
 %Alajuela
 restaurante(['PizzaHut', italiana, ['Alajuela', 'Centro de Alajuela'], 20, 'este restaurante ofrece deliciosas pizzas, preparadas con ingredientes frescos y de buena calidad']).
-restaurante(['Matsuri', china, ['Alajuela', 'Tropicana, Provincia de Alajuela, Alajuela'],20,'es un local de comida china muy conocido en la zona, no te dejar√° indiferente']).
+restaurante(['Matsuri', china, ['Alajuela', 'Tropicana, Provincia de Alajuela, Alajuela'],20,'es un local de comida china muy conocido en la zona, no te dejar· indiferente']).
 
 %Guanacaste
-restaurante(['Yonguang',china,['Guanacaste', 'Provincia de Guanacaste, Liberia'],20,'este restaurante te lleva en un viaje culinario a trav√©s de los diferentes sabores de China.']).
+restaurante(['Yonguang',china,['Guanacaste', 'Provincia de Guanacaste, Liberia'],20,'este restaurante te lleva en un viaje culinario a travÈs de los diferentes sabores de China.']).
 restaurante(['Reina', mariscos, ['Guanacaste', 'Provincia de Guanacaste, Curime'], 30, 'un local casero en el que sirven comida proveniente del mar a un muy buen precio']).
 
 %Limon
-restaurante(['TacoBell', mexicana, ['Limon', 'Sobre carretera Braulio Carrillo, Guapiles, Limon'], 30, 'es una cadena de restaurantes de comida r√°pida que sirve comida mexicana inspirada en los Estados Unidos']).
+restaurante(['TacoBell', mexicana, ['Limon', 'Sobre carretera Braulio Carrillo, Guapiles, Limon'], 30, 'es una cadena de restaurantes de comida r·pida que sirve comida mexicana inspirada en los Estados Unidos']).
 restaurante(['Rancherita',mexicana,['Limon', 'Pocora, Limon, sobre ruta 32, 100 este de Almacenes El Colono de, Limon, Pocora'],20,'su atractivo es su comida traida del mismo Mexico, con un toque nacional']).
 
 
