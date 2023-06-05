@@ -1,16 +1,15 @@
-% Importación de archivos pl de la base de datos de Restaurantec y el BNF
+% ImportaciÃ³n de archivos pl de la base de Restaurantec y el BNF
+:-consult('DataBase.pl')
+:-consult('BNF.pl')
+:-style_check(-singleton)
 
-:-consult('DataBase').
-:-consult('BNF').
-:-style_check(-singleton).
+%                                                       %
+% DefiniciÃ³n de hechos de apoyo, a modo de operaciones %
+%                                                       %
 
-%						       %
-% Definición de hechos de apoyo, a modo de operaciones %
-%						       %
-
-% Verifica si una lista se encuentra vacía
-% E: Lista que se quiere verificar y el tamaño
-% S: Booleano indicando si está vacía
+% Verifica si una lista se encuentra vacÃ­a
+% E: Lista que se quiere verificar y el tamaÃ±o
+% S: Booleano indicando si estÃ¡ vacÃ­a
 lista_vacia(List, Empty) :-
     length(List, Len),
     (   Len =< 1
@@ -50,7 +49,7 @@ string_to_list_of_atoms(X,L):-
 
 % Verifica que exista el elemento en la lista
 % E: Elemento y lista
-% S: Boolean indicando si el elemento está
+% S: Boolean indicando si el elemento estÃ¡
 
 miembro(X,[X|_]).
 miembro(X,[_|T]):-miembro(X,T).
@@ -66,108 +65,99 @@ miembro(X,[_|T]):-miembro(X,T).
 % S: Nombre del menu
 
 compareTipoDeMenu([],X):- nl, writeln('Hey, el menu que pides no se encuentra disponible'),
-			  writeln('Intenta de nuevo, tal vez pueda ayudarte con algo más'),nl,
-			  input_to_list(Oracion),
-			  compareTipoDeMenu(Oracion,X).
-
+						  writeln('Intenta de nuevo, tal vez pueda ayudarte con algo mÃ¡s'),nl,
+						  input_to_list(Oracion),
+						  compareTipoDeMenu(Oracion,X).
 compareTipoDeMenu([H|_], X):- listaTipoDeMenu(L),
-			      miembro(H,L),
-			      X = H, !.
-
+							  miembro(H,L),
+							  X = H, !.
 compareTipoDeMenu([H|T], X):- listaTipoDeMenu(L),
-			      \+miembro(H,L),
-			      compareTipoDeMenu(T,X).
+	                          \+miembro(H,L),
+	                          compareTipoDeMenu(T,X).
 
 % Busca la comida
 % E: Lista y resultado
 % S: Nombre de la comida
 
-compareComida([],X):- nl, writeln('Hmm, parece que la comida que quieres no está¡ disponible'),
-		      writeln('¿Qué más te apetece?'),nl,
-		      input_to_list(Oracion),
-		      compareComida(Oracion,X).
-
+compareComida([],X):- nl, writeln('Hmm, parece que la comida que quieres no estÃ¡ disponible'),
+					  writeln('Â¿QuÃ© mÃ¡s te apetece?'),nl,
+					  input_to_list(Oracion),
+					  compareComida(Oracion,X).
 compareComida([H|_], X):- listaComidas(L),
-			  miembro(H,L),
-			  X = H, !.
-
+						  miembro(H,L),
+						  X = H, !.
 compareComida([H|T], X):- listaComidas(L),
-			  \+miembro(H,L),
-			  compareComida(T,X).
+	                      \+miembro(H,L),
+	                      compareComida(T,X).
 
 % Busca el sabor pedido de comida
 % E: Lista y resultado
 % S: Sabor de la comida
 
 compareSaborComidaAux([H|_], X):- listaSaborComida(L),
-				  flatten(L,Y),
-				  X = Y.
+						          flatten(L,Y),
+						          X = Y.
 
 compareSaborComida([],X):- nl, writeln('Parece ser que no tenemos ese sabor que buscas'),
-			       writeln('Pero tenemos otros incluso mejores, prueba otro'),nl,
-			       input_to_list(Oracion),
-			       compareSaborComida(Oracion,X).
-
+						   writeln('Pero tenemos otros incluso mejores, prueba otro'),nl,
+						   input_to_list(Oracion),
+						   compareSaborComida(Oracion,X).
 compareSaborComida([H|_], X):- compareSaborComidaAux(C, Y),
-			       miembro(H,Y),
-			       X = H, !.
+							   miembro(H,Y),
+							   X = H, !.
 compareSaborComida([H|T], X):- compareSaborComidaAux(C, Y),
-			       \+miembro(H,Y),
-			       compareSaborComida(T,X).
+	                           \+miembro(H,Y),
+	                           compareSaborComida(T,X).
 
 % Se encarga de buscar el refresco
 % E: Lista y el resultado
 % S: Sabor de la bebida
 
-compareBebida([],X):- nl, writeln('El sabor de la bebida que buscas parece que no está¡ disponible'),
-		      writeln('¿Que otra bebida te apetece?'),nl,
-		      input_to_list(Oracion),
-		      compareBebida(Oracion,X).
-
+compareBebida([],X):- nl, writeln('El sabor de la bebida que buscas parece que no estÃ¡ disponible'),
+					  writeln('Â¿Que otra bebida te apetece?'),nl,
+					  input_to_list(Oracion),
+					  compareBebida(Oracion,X).
 compareBebida([H|_], X):- listaBebidas(L),
-			  miembro(H,L),
-			  X = H, !.
-
+						  miembro(H,L),
+						  X = H, !.
 compareBebida([H|T], X):- listaBebidas(L),
-			  \+miembro(H,L),
-			  compareBebida(T,X).
+	                      \+miembro(H,L),
+	                      compareBebida(T,X)
 
 % Se busca el lugar ingresado
 % E: Lista y resultadd
 % S: nombre del lugar
 
 compareLugarAux([H|_], X):- listaLugar(L),
-			    flatten(L,Y),
-			    X = Y.
+						    flatten(L,Y),
+						    X = Y.
 
 compareLugar([],X):- nl, writeln('El lugar que procuras parece no estar disponible'),
-		     writeln('¿Otro lugar?'),nl,
-		     input_to_list(Oracion),
-		     compareLugar(Oracion,X).
-
+					 writeln('Â¿Otro lugar?'),nl,
+					 input_to_list(Oracion),
+					 compareLugar(Oracion,X).
 compareLugar([H|_], X):- compareLugarAux(C, Y),
-			 miembro(H,Y),
-			 X = H, !.
-
+						 miembro(H,Y),
+						 X = H, !.
 compareLugar([H|T], X):- compareLugarAux(C, Y),
-			 \+miembro(H,Y),
-			 compareLugar(T,X).
+	                     \+miembro(H,Y),
+	                     compareLugar(T,X).
 
 % Se busca la cantidad de personas para un cupo.
 % E: Lista y Resultado
 % S: Cantidad de personas
 
-compareCantidad([],X):-  nl, writeln('Parece ser que no hay el espacio necesario para ti y tus acompañantes'),
-			 writeln('¿Puedo ayudarte con otra cantidad?'),nl,
-			 input_to_list(Oracion),
-			 compareCantidad(Oracion,X).
+compareCantidad([],X):-  nl, writeln('Parece ser que no hay el espacio necesario para ti y tus acompaÃ±antes'),
+						 writeln('Â¿Puedo ayudarte con otra cantidad?'),nl,
+						 input_to_list(Oracion),
+						 compareCantidad(Oracion,X).
 compareCantidad([H|_], X):- listaCantidad(L),
-			    miembro(H,L) ,
-			    atom_number(H, Y),
-			    X = Y, !.
+							miembro(H,L) ,
+							atom_number(H, Y),
+							X = Y, !.
 compareCantidad([H|T], X):- listaCantidad(L),
-			    \+miembro(H,L),
-			    compareCantidad(T,X).
+	                        \+miembro(H,L),
+	                        compareCantidad(T,X).
 
 % Busca la lista completa de restaurantes
 % E: Resultado
@@ -202,52 +192,52 @@ listaLugar(L) :- findall(X, (restaurante([_,_,X,_,_])) , L).
 % E: Resultado
 % S: Lista de cantidades de cupos
 listaCantidad(Cantidad) :- numlist(1, 40, CantidadTemp),
-			   list_to_string(CantidadTemp, Str),
-			   string_to_list_of_atoms(Str,Cantidad).
+							list_to_string(CantidadTemp, Str),
+							string_to_list_of_atoms(Str,Cantidad).
 
-% Petición de los inputs del usuario
+% PeticiÃ³n de los inputs del usuario
 % E: Nombre del Restaurante, Tipo del Menu, Tipo de Comida, Sabor de la Comida, Tipo de Bebida, Lugar Deseado y Cantidad de Personas
 % S: Resultado final de busqueda del restaurante
 
 pedirDatos(NombreRest, TipoMenu, TipoComida, SaborComida, TipoBebida, LugarDeseado, CantidadDeseada):-
 
-	% Sección dedicada al menu que quiere el usuario.
-	nl, writeln('¿Qué menu te apetece comer el día de hoy?'),
+	% SecciÃ³n dedicada al menu que quiere el usuario.
+	nl, writeln('Â¿QuÃ© menu te apetece comer el dÃ­a de hoy?'),
 	input_to_list(Oracion),
 	validacion_gramatical(Oracion),
     compareTipoDeMenu(Oracion, TipoMenuTemp),
 	TipoMenu = TipoMenuTemp,
 
-	% Sección que busca la comida que se desea
-	nl, write('¿En que comida estás pensando en este momento?'),
+	% SecciÃ³n que busca la comida que se desea
+	nl, write('Â¿En que comida estÃ¡s pensando en este momento?'),
 	input_to_list(Oracion3),
 	validacion_gramatical(Oracion3),
 	compareComida(Oracion3, ComidaTemp),
 	TipoComida = ComidaTemp,
 
-	% Sección que busca el sabor especifico
-	nl, write('¿Cuál tipo de '), write(TipoComida), write(' desea?'), nl,
+	% SecciÃ³n que busca el sabor especifico
+	nl, write('Â¿CuÃ¡l tipo de '), write(TipoComida), write(' desea?'), nl,
 	input_to_list(Oracion4),
 	validacion_gramatical(Oracion4),
 	compareSaborComida(Oracion4, SaborComidaTemp),
 	SaborComida = SaborComidaTemp,
 
-	% Sección dedicada que busca la bebida
-	nl, writeln('¿Qué bebida le gustaría para acompañar su comida?'),
+	% SecciÃ³n dedicada que busca la bebida
+	nl, writeln('Â¿QuÃ© bebida le gustarÃ­a para acompaÃ±ar su comida?'),
 	input_to_list(Oracion5),
 	validacion_gramatical(Oracion5),
 	compareBebida(Oracion5, BebidaTemp),
 	TipoBebida = BebidaTemp,
 
-	% Sección dedicada que busca el lugar
-	nl, write('¿En cual provincia le quedaría mejor para comer?'), nl,
+	% SecciÃ³n dedicada que busca el lugar
+	nl, write('Â¿En cual provincia le quedarÃ­a mejor para comer?'), nl,
 	input_to_list(Oracion6),
 	validacion_gramatical(Oracion6),
 	compareLugar(Oracion6, LugarTemp),
 	LugarDeseado = LugarTemp,
 
-	% Sección dedicada que busca la cantidad de personas que irán al restaurante
-	nl, writeln('¿Cuantas personas van a asistir al restaurante?'),
+	% SecciÃ³n dedicada que busca la cantidad de personas que irÃ¡n al restaurante
+	nl, writeln('Â¿Cuantas personas van a asistir al restaurante?'),
 	input_to_list(Oracion7),
 	validacion_gramatical(Oracion7),
 	compareCantidad(Oracion7, CantidadTemp),
@@ -294,10 +284,10 @@ buscarRestauranteConDatosIngresados(NombreRest, TipoMenu, TipoComida, SaborComid
 	menu([TipoComida, NombreIngresado, SaboresDisponibles]),
 	bebida([TipoBebida, NombreIngresado2]),
 	\+verificarDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
-	nl, writeln('> Lo intente pero no pude encontrar un restaurante lo suficientemente bueno para tí. Lo siento mucho :( <'), nl,
+	nl, writeln('> Lo intente pero no pude encontrar un restaurante lo suficientemente bueno para tÃ­. Lo siento mucho :( <'), nl,
 	buscarNuevamente(), !.
 
-% Se crea la recomendación del restaurante
+% Se crea la recomendaciÃ³n del restaurante
 
 crearReferencia(NombreRest, DireccionTemp, Obligaciones):-
 	list_to_string(DireccionTemp,Direccion),
@@ -306,24 +296,24 @@ crearReferencia(NombreRest, DireccionTemp, Obligaciones):-
 	write('> Tenga en cuenta que para ingresar al restaurante '), write(Obligaciones), writeln(' <'),
 	nl.
 
-% Se le da la opción al usuario de volver a buscar otro restaurante
+% Se le da la opciÃ³n al usuario de volver a buscar otro restaurante
 
 buscarNuevamenteAux(Respuesta):- miembro('si',Respuesta),
 								 pedirDatos(A,B,C,D,E,F,G).
 buscarNuevamenteAux(Respuesta):- \+miembro('si',Respuesta),
 								 despedida(), !.
-buscarNuevamente():- nl, writeln('> ¿Quieres volver a bucar una recomendación? Por favor dime sí o no <'), nl,
+buscarNuevamente():- nl, writeln('> Â¿Quieres volver a bucar una recomendaciÃ³n? Por favor dime sÃ­ o no <'), nl,
 						input_to_list(Respuesta),
 						buscarNuevamenteAux(Respuesta), !.
 
-% Presentación de RestauranTEC
-% Utilizar Fuente Courier New para su visualización correcta.
+% PresentaciÃ³n de RestauranTEC
+% Utilizar Fuente Courier New para su visualizaciÃ³n correcta.
 encabezado():-
     writeln("                  ,--.    ,--."),
     writeln("                 ((O ))--((O ))"),
     writeln("               ,'_`--'____`--'_`."),
     writeln("              _:  ____________  :_"),
-    writeln("             | | ||::::::::::|| | |   ¡Hola! Bienvenido a RestauranTEC."),
+    writeln("             | | ||::::::::::|| | |   Â¡Hola! Bienvenido a RestauranTEC."),
     writeln("             | | ||::::::::::|| | |   Voy a ser tu ayudante por este rato."),
     writeln("             | | ||::::::::::|| | |"),
     writeln("             |_| |/__________\\| |_|"),
@@ -355,7 +345,7 @@ despedida():-
     writeln("                 ((O ))--((O ))"),
     writeln("               ,'_`--'____`--'_`."),
     writeln("              _:  ____________  :_"),
-    writeln("             | | ||::::::::::|| | |   ¡Hasta la proxima!"),
+    writeln("             | | ||::::::::::|| | |   Â¡Hasta la proxima!"),
     writeln("             | | ||::::::::::|| | |   Espero haberte sido de ayuda."),
     writeln("             | | ||::::::::::|| | |"),
     writeln("             |_| |/__________\\| |_|"),
