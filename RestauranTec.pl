@@ -122,7 +122,7 @@ listaSaborComida(L) :- findall(X, (menu([_,_,X])), L).
 % E: Lista y el resultado
 % S: Sabor de la bebida
 
-bebida([],X):- nl, writeln('El sabor de la bebida que buscas parece que no está¡ disponible'),
+bebida([],X):- nl, writeln('El sabor de la bebida que buscas parece que no está disponible'),
 		      writeln('¿Que otra bebida te apetece?'),nl,
 		      inputToList(Oracion),
 		      bebida(Oracion,X).
@@ -284,6 +284,10 @@ buscarRestauranteConDatosIngresados(NombreRest, TipoComida, Platillo, SaborComid
 	\+verificacionDeDatos(NombreRest, NombreIngresado, NombreIngresado2, SaborComida, SaboresDisponibles),
 	nl, writeln('> Lo intente pero no pude encontrar un restaurante lo suficientemente bueno para tí. Lo siento mucho :( <'), nl,
 	buscarNuevamente(), !.
+	
+buscarRestauranteConDatosIngresados(_, _, _, _, _, _, _):-
+    nl, writeln('> Lo intente pero no pude encontrar un restaurante lo suficientemente bueno para tí. Lo siento mucho :( <'), nl,
+    buscarNuevamente(), !.
 
 % Se crea la recomendación del restaurante
 
